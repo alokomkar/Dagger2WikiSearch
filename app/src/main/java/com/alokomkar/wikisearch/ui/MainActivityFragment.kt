@@ -45,6 +45,7 @@ class MainActivityFragment : Fragment(), AdapterClickListener<SearchContent>, Ob
         searchViewModel = ViewModelProviders.of(this, viewModelFactory).get(
                 SearchViewModel::class.java)
         rvSearchContent.apply {
+            setHasFixedSize(true)
             layoutManager = LinearLayoutManager( context )
             contentRvAdapter = ContentRvAdapter( contentList, this@MainActivityFragment )
             adapter = contentRvAdapter
@@ -59,8 +60,14 @@ class MainActivityFragment : Fragment(), AdapterClickListener<SearchContent>, Ob
 
             override fun afterTextChanged( editable : Editable?) {
                 if( editable != null ) {
-                    searchViewModel.searchWiki( editable.toString() )
+                    val searchString = editable.toString()
+                    if( searchString.isEmpty() )
+                        onChanged( ArrayList() )
+                    else
+                        searchViewModel.searchWiki( searchString )
+
                 }
+
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -68,7 +75,6 @@ class MainActivityFragment : Fragment(), AdapterClickListener<SearchContent>, Ob
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
         })
-        tvSearch.setText("Sachin T")
     }
 
     override fun onChanged(t: List<SearchContent>?) {

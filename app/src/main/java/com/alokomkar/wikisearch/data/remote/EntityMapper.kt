@@ -1,5 +1,6 @@
 package com.alokomkar.wikisearch.data.remote
 
+import android.util.Log
 import com.alokomkar.wikisearch.base.BaseEntityMapper
 import com.alokomkar.wikisearch.data.local.SearchContent
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class EntityMapper @Inject constructor() : BaseEntityMapper<Response, SearchCont
                     else "",
                     "https://en.wikipedia.org/?curid=" + page.pageid))
         }
+        Log.d("Results", contentList.toString() )
         return contentList
     }
 

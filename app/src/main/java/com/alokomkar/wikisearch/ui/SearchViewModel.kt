@@ -2,13 +2,11 @@ package com.alokomkar.wikisearch.ui
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.alokomkar.wikisearch.data.Repository
 import com.alokomkar.wikisearch.data.local.SearchContent
 import com.alokomkar.wikisearch.data.remote.EntityMapper
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -31,6 +29,7 @@ class SearchViewModel
             }
 
             override fun onNext(t: ArrayList<SearchContent>) {
+                Log.d("Results", t.toString() )
                 searchResults.postValue(t)
             }
 
@@ -42,10 +41,7 @@ class SearchViewModel
 
         repository.getSearchResultsFromApi( searchString )
                 .subscribeOn( Schedulers.newThread() )
-                .flatMap {
-                    t -> ObservableSource<ArrayList<SearchContent>> {
-                    entityMapper.mapFromCached(t)
-                } }
+                .map { t -> entityMapper.mapFromCached(t) }
                 .subscribeOn( Schedulers.computation() )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .debounce( 400, TimeUnit.MILLISECONDS )

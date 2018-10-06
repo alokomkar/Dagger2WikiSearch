@@ -10,13 +10,20 @@ import android.widget.TextView
 import com.alokomkar.wikisearch.R
 import com.alokomkar.wikisearch.base.AdapterClickListener
 import com.alokomkar.wikisearch.data.local.SearchContent
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 @SuppressLint("InflateParams")
 class ContentRvAdapter(private val contentList : ArrayList<SearchContent>,
                        private val adapterClickListener: AdapterClickListener<SearchContent> ) : RecyclerView.Adapter<ContentRvAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int): ViewHolder
-        = ViewHolder( LayoutInflater.from( parent.context ).inflate(R.layout.item_search, null, false))
+    private val requestOptions = RequestOptions()
+    override fun onCreateViewHolder(parent : ViewGroup, viewType : Int): ViewHolder {
+        requestOptions.error(R.mipmap.ic_launcher)
+        requestOptions.placeholder(R.drawable.ic_launcher_background)
+        return ViewHolder( LayoutInflater.from( parent.context ).inflate(R.layout.item_search, null, false))
+    }
+
 
     override fun getItemCount(): Int
         = contentList.size
@@ -38,6 +45,11 @@ class ContentRvAdapter(private val contentList : ArrayList<SearchContent>,
         fun bindData(searchContent: SearchContent) {
             tvHeader.text = searchContent.searchHeader
             tvSubHeader.text = searchContent.searchSubHeader
+            Glide.with(ivContent)
+                    .asBitmap()
+                    .apply( requestOptions )
+                    .load( searchContent.searchImage )
+                    .into( ivContent )
         }
 
         override fun onClick( view : View? ) {

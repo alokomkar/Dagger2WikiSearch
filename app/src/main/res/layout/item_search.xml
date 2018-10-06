@@ -31,4 +31,10 @@
         android:layout_toEndOf="@+id/ivContent"
         android:layout_toRightOf="@+id/ivContent" />
 
+    <View
+        android:layout_below="@+id/tvSubHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/colorAccent"/>
+
 </RelativeLayout>
