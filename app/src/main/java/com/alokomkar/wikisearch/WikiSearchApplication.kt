@@ -21,7 +21,7 @@ class WikiSearchApplication : Application(), HasSupportFragmentInjector {
 
         DaggerAppComponent.builder()
                 .appModule(AppModule(this))
-                .netModule(NetModule("https://en.wikipedia.org//w/api.php"))
+                .netModule(NetModule("https://en.wikipedia.org//w/"))
                 .build().inject(this)
     }
 
