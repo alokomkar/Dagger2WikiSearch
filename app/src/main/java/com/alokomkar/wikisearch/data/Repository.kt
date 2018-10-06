@@ -12,5 +12,4 @@ class Repository @Inject constructor(private val apiInterface: ApiInterface,
     fun getSearchResultsFromApi( searchString : String ) : Observable<Response>
         = apiInterface.getSearchResponse( searchString )
 
-
 }

@@ -18,6 +18,8 @@ import android.widget.Toast
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.text.Editable
+import android.text.TextWatcher
 
 
 /**
@@ -47,8 +49,26 @@ class MainActivityFragment : Fragment(), AdapterClickListener<SearchContent>, Ob
             contentRvAdapter = ContentRvAdapter( contentList, this@MainActivityFragment )
             adapter = contentRvAdapter
         }
-        searchViewModel.searchWiki("Sachin T")
+
         searchViewModel.searchResults.observeForever( this )
+        searchViewModel.error.observeForever({ error -> Toast.makeText(context,
+                error,
+                Toast.LENGTH_LONG).show()})
+
+        tvSearch.addTextChangedListener( object : TextWatcher {
+
+            override fun afterTextChanged( editable : Editable?) {
+                if( editable != null ) {
+                    searchViewModel.searchWiki( editable.toString() )
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        })
+        tvSearch.setText("Sachin T")
     }
 
     override fun onChanged(t: List<SearchContent>?) {
@@ -67,6 +87,10 @@ class MainActivityFragment : Fragment(), AdapterClickListener<SearchContent>, Ob
                     Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        searchViewModel.disposeElements()
     }
 }
