@@ -58,4 +58,6 @@ dependencies {
     //RxJava RxAndroid
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroidVersion}"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+
 }

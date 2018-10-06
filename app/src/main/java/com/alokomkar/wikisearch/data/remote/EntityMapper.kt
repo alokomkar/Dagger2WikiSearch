@@ -12,8 +12,12 @@ class EntityMapper @Inject constructor() : BaseEntityMapper<Response, SearchCont
             contentList.add(SearchContent(
                     page.pageid!!,
                     page.title!!,
-                    page.terms?.description!![0],
-                    page.thumbnail?.source!!,
+                    if( page.terms != null )
+                        page.terms?.description!![0]
+                    else "No description",
+                    if( page.thumbnail != null )
+                        page.thumbnail?.source!!
+                    else "",
                     "https://en.wikipedia.org/?curid=" + page.pageid))
         }
         return contentList

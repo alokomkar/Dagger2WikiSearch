@@ -10,6 +10,23 @@ class Repository @Inject constructor(private val apiInterface: ApiInterface,
                                      val utils: Utils ) {
 
     fun getSearchResultsFromApi( searchString : String ) : Observable<Response>
-        = apiInterface.getSearchResponse( searchString )
+            = apiInterface.getSearchResponse( getQueryMap( searchString ) )
+
+    private fun getQueryMap(searchString: String): Map<String, String> {
+        val map = HashMap<String, String>()
+        map["action"] = "query"
+        map["format"] = "json"
+        map["prop"] = "pageimages%7Cpageterms"
+        map["generator"] = "prefixsearch"
+        map["redirects"] = "1"
+        map["formatversion"] = "2"
+        map["piprop"] = "thumbnail"
+        map["pithumbsize"] = "50"
+        map["pilimit"] = "10"
+        map["wbptterms"] = "description"
+        map["gpssearch"] = searchString
+        map["gpslimit"] = "10"
+        return map
+    }
 
 }
